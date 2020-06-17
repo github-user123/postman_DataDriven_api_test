@@ -1,0 +1,326 @@
+{
+	"info": {
+		"_postman_id": "700b1917-4768-4e77-9bce-d029a6d37eb5",
+		"name": "BPDTS_Test-API",
+		"description": "TODO: Create a short automated test for the API provided. Check that the data returned by the API is valid, and that ensure that each valid operation can be successfully called for each endpoint. Once you've built the tests, push the answer to Github or Gitlab, and send a link to BPDTS team.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List of users by city",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "facd5e1f-323c-491a-b42e-f1c9921028bf",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d3423236-4c1c-4401-8f2c-062e73e44dd3",
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"pm.test(\"Body contians user email\", function () {",
+							"    pm.expect(pm.response.text()).to.include(pm.variables.get(\"email\"));",
+							"});",
+							"",
+							"",
+							"var jsonData;",
+							"var test;",
+							"try { jsonData = pm.response.json();",
+							"      test = pm.environment.get(\"city\");",
+							"    } catch(e) {}",
+							"",
+							"pm.test(\"Service returns expected user records\", function () {",
+							"    if(test==\"London\"){",
+							"         var numberOfItems = Object.keys(jsonData).length; ",
+							"         pm.expect(numberOfItems).to.equal(6);",
+							"    }",
+							"    else{",
+							"    var body = JSON.parse(responseBody);",
+							"    tests[\"Count: \"  + body.length] = true;",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{API_URL}}/city/{{city}}/users",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"city",
+						"{{city}}",
+						"users"
+					]
+				},
+				"description": "This api request will provide the list of users in response body"
+			},
+			"response": []
+		},
+		{
+			"name": "Search users by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "13928c40-ab48-40e4-85b5-43a882234e79",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"pm.test(\"Body contians user's email\", function () {",
+							"    pm.expect(pm.response.text()).to.include(pm.variables.get(\"email\"));",
+							"});",
+							"",
+							"pm.test(\"Body contians user's first name\", function () {",
+							"    pm.expect(pm.response.text()).to.include(pm.variables.get(\"first_name\"));",
+							"});",
+							"",
+							"pm.test(\"Body contians user's last_name\", function () {",
+							"    pm.expect(pm.response.text()).to.include(pm.variables.get(\"last_name\"));",
+							"});",
+							"",
+							"pm.test(\"Body contians user's city\", function () {",
+							"    pm.expect(pm.response.text()).to.include(pm.variables.get(\"city\"));",
+							"});",
+							"",
+							"var jsonData;",
+							"try { jsonData = pm.response.json(); } catch(e) {}",
+							"",
+							"pm.test(\"response body has 8 items in the user record\", function () {",
+							"    var numberOfItems = Object.keys(jsonData).length; ",
+							"    pm.expect(numberOfItems).to.equal(8);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{API_URL}}/user/{{id}}",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"user",
+						"{{id}}"
+					]
+				},
+				"description": "This api request will provide the list of users in response body"
+			},
+			"response": []
+		},
+		{
+			"name": "Search users by invalid id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "06026513-3cf6-4735-8ecc-162d69d52bc0",
+						"exec": [
+							"",
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"pm.test(\"Body contians message Id test doesn't exist\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Id test doesn't exist\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{API_URL}}/user/test",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"user",
+						"test"
+					]
+				},
+				"description": "This api request will provide the list of users in response body"
+			},
+			"response": []
+		},
+		{
+			"name": "List of users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7b43bd5c-0f20-4f18-88dc-35eab1260c49",
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"pm.test(\"Body contians user email\", function () {",
+							"    pm.expect(pm.response.text()).to.include(pm.variables.get(\"email\"));",
+							"});",
+							"",
+							"pm.test(\"Service returns 1000 user records\", function () {",
+							"    pm.expect(pm.response.json().length).to.eq(1000);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{API_URL}}/users",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"users"
+					]
+				},
+				"description": "This api request will provide the list of users in response body"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "d551ac33-c0e4-43bf-9692-af1f8f27d48b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "9970c3ed-9671-47f3-81f8-868c614f98b5",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "dd649893-68b5-45cc-8921-45dee8322d6d",
+			"key": "id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"id": "065563c2-31f5-48f6-9482-d7fb9b19b3f5",
+			"key": "first_name",
+			"value": "Maurise",
+			"type": "string"
+		},
+		{
+			"id": "5e9b51e2-975c-4a9c-9105-0915cd1ddd62",
+			"key": "last_name",
+			"value": "Shieldon",
+			"type": "string"
+		},
+		{
+			"id": "1b91f377-9176-429e-bda8-aa4ee91b8117",
+			"key": "email",
+			"value": "mshieldon0@squidoo.com",
+			"type": "string"
+		},
+		{
+			"id": "d1af90e0-cc0d-4b8b-957f-607276531157",
+			"key": "city",
+			"value": "Kax",
+			"type": "string"
+		}
+	]
+}
