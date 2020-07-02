@@ -1,6 +1,6 @@
 # Automated tests
 
-Authomated tests for BPDTS- API Tests. Currently compatible with Postman/Newman.
+API Tests automation using postman. Currently compatible with Postman/Newman.
 
 
 ## Technical documentation
